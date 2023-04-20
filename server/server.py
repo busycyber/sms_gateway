@@ -2,9 +2,28 @@ import socket
 import threading
 import pickle
 
-SERVER_HOST = '192.168.0.88'
+
+SERVER_HOST = ''
 SERVER_PORT = 5003
 BUFFER_SIZE = 1024 * 1024
+
+
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('192.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+
+
+local_ip = get_local_ip()
+SERVER_HOST = local_ip
+
 
 def handle_client(client_socket, client_address):
     print(f"{client_address[0]}:{client_address[1]} Connected!")

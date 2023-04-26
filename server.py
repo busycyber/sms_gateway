@@ -2,9 +2,10 @@ import socket
 import threading
 import pickle
 
+from main import send
 
 SERVER_HOST = ''
-SERVER_PORT = 5003
+SERVER_PORT = 9000
 BUFFER_SIZE = 1024 * 1024
 
 
@@ -34,11 +35,11 @@ def handle_client(client_socket, client_address):
 
         data = pickle.loads(data)
 
-        string_data = data['string']
-        list_data = data['list']
+        message = data['message']
+        numbers = data['numbers']
 
-        print(f"Received string: {string_data}")
-        print(f"Received list: {list_data}")
+        for x in numbers:
+            send(x, message)
 
     client_socket.close()
 

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\Users\korisnik\Desktop\sms_gateway\server.py", line 59, in <module>
+    start_server()
+  File "C:\Users\korisnik\Desktop\sms_gateway\server.py", line 48, in start_server
+    s.bind((SERVER_HOST, SERVER_PORT))
+OSError: [WinError 10048] Only one usage of each socket address (protocol/network address/port) is normally permitted

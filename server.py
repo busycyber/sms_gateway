@@ -1,6 +1,7 @@
 import socket
 import threading
 import pickle
+import time
 
 from main import send
 
@@ -21,27 +22,28 @@ def get_local_ip():
     return IP
 
 
-local_ip = get_local_ip()
-SERVER_HOST = local_ip
-
-
 def handle_client(client_socket, client_address):
     print(f"{client_address[0]}:{client_address[1]} Connected!")
 
     while True:
-        data = client_socket.recv(BUFFER_SIZE)
-        if not data:
+        try:
+            data = client_socket.recv(BUFFER_SIZE)
+            if not data:
+                break
+
+            data = pickle.loads(data)
+
+            message = data['message']
+            numbers = data['numbers']
+
+            for x in numbers:
+                send(x, message)
+        except Exception as e:
+            print(f"Error: {e}")
             break
 
-        data = pickle.loads(data)
-
-        message = data['message']
-        numbers = data['numbers']
-
-        for x in numbers:
-            send(x, message)
-
     client_socket.close()
+
 
 def start_server():
     s = socket.socket()
@@ -52,8 +54,22 @@ def start_server():
     print(f"Listening as {SERVER_HOST}:{SERVER_PORT} ...")
 
     while True:
-        client_socket, client_address = s.accept()
-        client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
-        client_thread.start()
+        try:
+            client_socket, client_address = s.accept()
+            client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
+            client_thread.start()
+        except Exception as e:
+            print(f"Error: {e}")
 
-start_server()
+    s.close()
+
+
+while True:
+    try:
+        local_ip = get_local_ip()
+        SERVER_HOST = local_ip
+        start_server()
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Restarting server in 5 seconds...")
+        time.sleep(5)

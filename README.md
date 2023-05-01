@@ -18,8 +18,7 @@ PySimpleGUI
 ## Installation
 
 ### Clone this repository:
-```
-bash
+```bash
 git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
 ```
 ### Install PySimpleGUI:
@@ -30,9 +29,8 @@ pip install PySimpleGUI
 1. Connect your Android phone to your computer via USB and enable USB debugging in the developer options.
 2. Find out the IP address of your phone: `adb shell ifconfig wlan0`
 3. Set the `PHONE_IP` environment variable to the IP address of your phone:
-```
-arduino
 
+```arduino
 export PHONE_IP=YOUR_PHONE_IP_ADDRESS
 ```
 Run the GUI application:
